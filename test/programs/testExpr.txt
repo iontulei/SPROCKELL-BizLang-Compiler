@@ -1,0 +1,30 @@
+int x = ((1 + 2) * (3 - 4)) / ((5 * 6) / 7);
+print(x);
+
+int y = 1;
+
+int z = 3 * (x + 4) / (2 - y);
+print(z);
+{
+    bool x = ((x > 2 || y < 5) && z == 10);
+    print(x);   // print1
+}
+
+print(x);   // same as print1
+
+
+// Example 7: More complex arithmetic expression
+int a = 10;
+int b = 3;
+int c = a * (b + 2) - (a - b) / 2;
+print(c);   // Expected output: 38
+
+// Example 8: Complex boolean expression
+bool condition =( ((a > b) || (c <= 38)) && (a != b));
+print(condition);   // Expected output: 1 (true)
+
+// Example 9: Nested arithmetic and boolean expressions
+int d = (a + b) * (c - 10) / 5;
+bool result = ((d >= 50 )&& ((c < 40) || (d < 60)));
+print(result);   // Expected output: 1 (true)
+

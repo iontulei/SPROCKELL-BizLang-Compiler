@@ -1,0 +1,52 @@
+// 2 shMem slots
+global bool flag0 = false;
+global bool flag1 = false;
+
+// 3rd shMem slot - turn can be 0 or 1
+global int turn;
+
+// 4th shMem slot - critical variable
+global int crit = 10;
+
+// 5th shMem slot - thread 1
+thread {
+
+    int i;
+    while (i < 10) {
+
+        flag0 = true;
+        turn = 1;
+        while ( flag1 && turn == 1 ) {
+            // busy wait
+        }
+        // critical section
+        crit = crit + 1;
+        print(crit);
+
+        flag0 = false;
+        i = i + 1;
+    }
+}
+
+// 6th shMem slot - thread 2
+thread {
+
+    int i;
+    while (i < 10) {
+
+        flag1 = true;
+        turn = 0;
+
+        while ( flag0 && turn == 0 ) {
+            // busy wait
+        }
+        // critical section
+        crit = crit - 2;
+        print(crit);
+
+        flag1 = false;
+        i = i + 1;
+    }
+}
+
+// note: thread 1 is declared earlier, thus it will most likely always start before thread 2 

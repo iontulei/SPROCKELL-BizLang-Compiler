@@ -1,0 +1,11 @@
+--------------- SOURCE CODE ---------------
+print(101);
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 101) 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 101

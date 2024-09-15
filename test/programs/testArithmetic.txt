@@ -1,0 +1,69 @@
+// Simple operations
+print(1 + 2);       // 3
+print(3 - 1);       // 2
+print(2 * 3);       // 6
+print(6 / 2);       // 3
+
+// Combined operations
+print(1 + 2 * 3);       // 7
+print((1 + 2) * 3);     // 9
+print((4 - 2) / 2);     // 1
+print(5 * (6 + 7));     // 65
+
+// Using variables
+int x = 5;
+int y = 10;
+int z = x + y;          // z=15
+z = z * 2;              // z=30
+z = (z - 10) / 2;       // z=10
+print(z);               // 10
+
+// Negative numbers
+int a = -5;
+int b = -10;
+int c = a + b;          // c=-15
+c = c * -1;             // c=15
+c = (c - -5) / 2;       // c=10
+print(c);               // 10
+
+// Multiple operations
+int result = 1 + 2 - 3 * 4 / 5;                 // result=1
+result = result + (6 - 7) * (8 / 2) - 9;        // result=-12
+result = (result + 15) * (3 - 4) + (5 / (6 + 7));     // result=-3
+print(result);                                        // -3
+
+// Edge cases
+int zero = 0;
+int one = 1;
+int large = 1000000;
+int small = -1000000;
+int edge1 = large + small;
+print(edge1);   // 0
+int edge2 = large - small;
+print(edge2);   // 2000000
+int edge3 = large * one;
+print(edge3);   // 1000000
+int edge4 = large / 3;
+print(edge4);   // 333333
+int edge5 = large * zero;
+print(edge5);   // 0
+int edge6 = zero / one; // should be zero
+print(edge6);   // 0
+
+// More complex expressions
+int complex1 = (1 + 2 * (3 + 4)) / 5;
+int complex2 = 10 - (5 * (2 + 3)) / 2;
+int complex3 = (x + y * z) - (a / b * c);   // (5 + 10 * 10) - (-5 / -10 * 10) = 105
+int complex4 = ((x * y) + (z / a)) - (b - c);   // (5 * 10) + (10 / -5) - (-10 - 10) = 68
+print(complex1);    // 3
+print(complex2);    // -2
+print(complex3);    // 105
+print(complex4);    // 68
+
+// Chained assignments
+int chain = 1;
+chain = chain + 1;
+chain = chain * 2;
+chain = chain - 3;
+chain = chain / 4;
+print(chain);       // 0

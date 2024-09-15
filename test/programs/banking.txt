@@ -1,0 +1,191 @@
+// 2 shMem slots
+global int balance1 = 1000;
+global int balance2 = 1000;
+
+
+// 3th shMem slot - one common lock for performing transactions
+Lock opLock;
+
+// 4th shMem slot - lock used as a barrier / join for threads
+Lock barrier;
+
+// lock barrier
+// NOTE: THIS IS NOT A REENTRANT LOCK!
+// at the end, main thread will try to lock barrier again
+// but will have to wait for it to be unlocked by a thread
+barrier.lock;
+
+
+// display of nested threads
+// it is also possible to create two threads in 1 thread
+// ex: thread { thread{} thread{} }
+
+// 5th shMem slot - thread 1 - balance1
+thread {
+    
+    // 6th shMem slot - thread 2 - balance2
+    thread {
+        
+        // 7th shMem slot - thread 3 - balance1
+        thread {
+
+            //8th shMem slot - thread 4 - balance2
+            thread {
+
+                // thread 4 - balance2
+                int i;
+                while (i < 100) {
+                    int toBal = i / (100 / 2);
+                    int amount1 = ((i / 5) + 1) * 5;
+                    int amount2 = amount1 / 3;
+
+                    // balance1 += amount1
+                    if (toBal == 0) {
+                        opLock.lock;
+
+                        balance2 = balance2 - amount1;
+                        balance1 = balance1 + amount1;
+
+                        print(balance1);
+                        print(balance2);
+
+                        opLock.unlock;
+
+                    // balance1 -= amount2
+                    } else {
+                        opLock.lock;
+
+                        balance2 = balance2 + amount2;
+                        balance1 = balance1 - amount2;
+
+                        print(balance1);
+                        print(balance2);
+
+                        opLock.unlock;
+                    }
+                    i = i + 1;
+                }
+            }
+
+
+            // thread 3 - balance1
+            int i;
+            while (i < 100) {
+                int toBal = i / (100 / 2);
+                int amount1 = ((i / 5) + 1) * 5;
+                int amount2 = amount1 / 4;
+
+                // balance2 += amount2
+                if (toBal == 0) {
+                    opLock.lock;
+
+                    balance1 = balance1 - amount1;
+                    balance2 = balance2 + amount1;
+
+                    print(balance1);
+                    print(balance2);
+
+                    opLock.unlock;
+
+                // balance2 -= amount1
+                } else {
+                    opLock.lock;
+
+                    balance1 = balance1 + amount2;
+                    balance2 = balance2 - amount2;
+
+                    print(balance1);
+                    print(balance2);
+
+                    opLock.unlock;
+                }
+                i = i + 1;
+            }
+        }
+        
+
+        // thread 2 - balance2
+        int i;
+        while (i < 100) {
+            int toBal = i / (100 / 2);
+            int amount1 = ((i / 5) + 1) * 10;
+            int amount2 = amount1 / 3;
+
+            // balance1 += amount2
+            if (toBal == 0) {
+                opLock.lock;
+
+                balance2 = balance2 - amount2;
+                balance1 = balance1 + amount2;
+
+                print(balance1);
+                print(balance2);
+
+                opLock.unlock;
+
+            // balance1 -= amount1
+            } else {
+                opLock.lock;
+
+                balance2 = balance2 + amount1;
+                balance1 = balance1 - amount1;
+
+                print(balance1);
+                print(balance2);
+
+                opLock.unlock;
+            }
+            i = i + 1;
+        }
+    }
+
+
+    // thread 1 - balance1
+    int i;
+    while (i < 100) {
+        int toBal = i / (100 / 2);
+        int amount1 = ((i / 5) + 1) * 10;
+        int amount2 = amount1 / 2;
+
+        // balance2 += amount1
+        if (toBal == 0) {
+            opLock.lock;
+
+            balance1 = balance1 - amount1;
+            balance2 = balance2 + amount1;
+
+
+            print(balance1);
+            print(balance2);
+
+            opLock.unlock;
+
+        // balance2 -= amount2
+        } else {
+            opLock.lock;
+
+            balance1 = balance1 + amount2;
+            balance2 = balance2 - amount2;
+
+            print(balance1);
+            print(balance2);
+
+            opLock.unlock;
+        }
+        i = i + 1;
+    }
+
+    // unlock barrier
+    barrier.unlock;
+}
+
+
+// print("This text will be printed in parallel with other threads!");
+
+// main will wait here until barrier will be unlocked
+// because barrier is not a reentrant lock
+barrier.lock;
+
+print("Final balances:");
+print(balance1);    // -5050
+print(balance2);    // 7050

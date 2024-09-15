@@ -1,0 +1,37 @@
+// ARRAYS ARE NOT SUPPORTED!
+
+// Global declarations
+int globalIntArray[5] = [1, 2, 3, 4, 5];
+bool globalBoolArray[3] = [true, false, true];
+
+// Main block
+{
+    // Local array declaration
+    char localCharArray[4] = ['a', 'b', 'c', 'd'];
+    
+    // Accessing array elements and printing
+    print(globalIntArray[0]);
+    print(globalBoolArray[1]);
+    print(localCharArray[2]);
+
+    // Modifying array elements
+    globalIntArray[2] = globalIntArray[2] + 10;
+    localCharArray[1] = 'z';
+    
+    // Printing modified array elements
+    print(globalIntArray[2]);
+    print(localCharArray[1]);
+
+    // Loop through arrays
+    int i = 0;
+    while (i < 4) {
+        print(localCharArray[i]);
+        i = i + 1;
+    }
+
+    int j = 0;
+    while (j < 5) {
+        print(globalIntArray[j]);
+        j = j + 1;
+    }
+}

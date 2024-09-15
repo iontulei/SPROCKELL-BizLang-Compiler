@@ -1,0 +1,77 @@
+// Example file demonstrating usage of multiple locks with threads in different orders
+
+global int result = 0;
+
+Lock lock1;
+Lock lock2;
+Lock lock3;
+Lock lock4;
+
+// Thread 1 increments result using locks in order 1, 2, 3, 4
+thread {
+    lock1.lock;
+    result = result + 1;
+    print(result);
+    lock1.unlock;
+
+    lock2.lock;
+    result = result + 2;
+    print(result);
+    lock2.unlock;
+
+    lock3.lock;
+    result = result + 3;
+    print(result);
+    lock3.unlock;
+
+    lock4.lock;
+    result = result + 4;
+    print(result);
+    lock4.unlock;
+}
+
+// Thread 2 decrements result using locks in order 2, 4, 1, 3
+thread {
+    lock2.lock;
+    result = result * 2;
+    print(result);
+    lock2.unlock;
+
+    lock4.lock;
+    result = result + 3;
+    print(result);
+    lock4.unlock;
+
+    lock1.lock;
+    result = result * 4;
+    print(result);
+    lock1.unlock;
+
+    lock3.lock;
+    result = result + 5;
+    print(result);
+    lock3.unlock;
+}
+
+// Thread 3 doubles result using locks in order 4, 2, 3, 1
+thread {
+    lock4.lock;
+    result = result - 2;
+    print(result);
+    lock4.unlock;
+
+    lock2.lock;
+    result = result * 3;
+    print(result);
+    lock2.unlock;
+
+    lock3.lock;
+    result = result - 4;
+    print(result);
+    lock3.unlock;
+
+    lock1.lock;
+    result = result - 5;
+    print(result);
+    lock1.unlock;
+}

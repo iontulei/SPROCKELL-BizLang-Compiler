@@ -1,0 +1,17 @@
+int x = 10;
+print(x);
+
+{
+    char x = 'W';
+    print(x);
+
+    {
+        bool x = false;
+        print(x);
+
+        {
+            bool x = true;
+            print(x);
+        }
+    }
+}

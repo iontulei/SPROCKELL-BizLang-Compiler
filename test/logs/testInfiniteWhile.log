@@ -1,0 +1,76 @@
+--------------- SOURCE CODE ---------------
+// Test infinite loops with while
+
+int x = 0;
+//print(x);
+while (true) {
+    x = x + 1;
+    //print(x);
+}
+
+// this should never be printed
+print("FINISH");
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 7),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 1) 2,
+  Branch 2 (Rel (-7)),
+  Load (ImmValue 83) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 112) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 114) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 111) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 99) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 107) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 101) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 48) 2,
+  Compute Add 1 2 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 115) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 97) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 121) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 115) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 70) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 73) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 78) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 73) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 83) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 72) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 10) 2,
+  WriteInstr 2 (DirAddr 65537),
+  EndProg
+]]

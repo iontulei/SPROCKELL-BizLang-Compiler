@@ -1,0 +1,112 @@
+--------------- SOURCE CODE ---------------
+// This program finds the (squared) area of a triangle
+// since our language does not support sqrt.
+
+int a = 5;
+int b = 6;
+int c = 7;
+
+int s = (a + b + c) / 2;
+int x = a - b - c;              // -8
+
+int area = (s * (s-a) * (s-b) * (s-c));     // 216
+
+// print("The area of the triangle is:");
+print(area);
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 5) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 6) 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 7) 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  Store 2 (DirAddr 4),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Store 2 (DirAddr 5),
+  Load (DirAddr 5) 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 216

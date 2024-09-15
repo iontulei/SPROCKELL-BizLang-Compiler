@@ -1,0 +1,36 @@
+// STRINGS ARE NOT SUPPORTED!
+
+// This program tests strings
+// No concatenation implemented
+
+// Declare global strings
+String globalStr1 = "Hello, ";
+String globalStr2 = "World!";
+
+// Main program block
+{
+    // Declare local strings
+    String localStr1 = "Goodbye, ";
+    String localStr2 = "Moon.";
+
+    // Print global strings
+    print(globalStr1); // Expected: "Hello, "
+    print(globalStr2); // Expected: "World!"
+
+    // Print local strings
+    print(localStr1); // Expected: "Goodbye, "
+    print(localStr2); // Expected: "Moon."
+
+    // -- Is updating allowed? --
+
+    // Update global string and print
+    // globalStr1 = "Hi, ";
+    print(globalStr1); // Expected: "Hi, "
+
+    // Update local string and print
+    localStr1 = "Farewell, ";
+    print(localStr1); // Expected: "Farewell, "
+
+    // Print a completion message
+    print("Finished testing string operations.");
+}

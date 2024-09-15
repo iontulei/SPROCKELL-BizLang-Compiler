@@ -1,0 +1,141 @@
+// Simple if statements
+if (true) {
+    print(1);         // 1
+}
+
+if (false) {
+    print(2);         // This should not be printed
+}
+
+// If-else statements
+if (true) {
+    print(3);         // 3
+} else {
+    print(4);         // This should not be printed
+}
+
+if (false) {
+    print(5);         // This should not be printed
+} else {
+    print(6);         // 6
+}
+
+// Nested if-else statements
+if (true) {
+    if (false) {
+        print(7);     // This should not be printed
+    } else {
+        print(8);     // 8
+    }
+} else {
+    print(9);         // This should not be printed
+}
+
+// Logical operators
+if (true && true) {
+    print(10);        // 10
+}
+
+if (true && false) {
+    print(11);        // This should not be printed
+}
+
+if (false || true) {
+    print(12);        // 12
+}
+
+if (false || false) {
+    print(13);        // This should not be printed
+}
+
+if (!(false)) {
+    print(14);        // 14
+}
+
+if (!(true)) {
+    print(15);        // This should not be printed
+}
+
+// Combining logical operators
+if ((true && false) || (false && true)) {
+    print(16);        // This should not be printed
+}
+
+if ((true && true) || (false && false)) {
+    print(17);        // 17
+}
+
+// Using variables in conditions
+int x = 5;
+int y = 10;
+if (x < y) {
+    print(18);        // 18
+}
+
+if (x > y) {
+    print(19);        // This should not be printed
+}
+
+if (x == 5 && y == 10) {
+    print(20);        // 20
+}
+
+if (x != 5 || y != 10) {
+    print(21);        // This should not be printed
+}
+
+// Else-if ladder
+int a = 5;
+if (a < 5) {
+    print(22);        // This should not be printed
+} else {
+    print(24);        // 24
+}
+
+a = 3;
+if (a < 5) {
+    print(25);        // 25
+} else {
+    print(27);        // This should not be printed
+}
+
+// Complex conditions
+int b = 4;
+int c = 8;
+if ((a < b && b < c) || (a == 3 && c == 8)) {
+    print(28);        // 28
+}
+
+if ((a > b || b > c) && (a != 3 || c != 8)) {
+    print(29);        // This should not be printed
+}
+
+// Edge cases
+int zero = 0;
+int one = 1;
+if (zero == 0 && one == 1) {
+    print(30);        // 30
+}
+
+if (zero != 0 || one != 1) {
+    print(31);        // This should not be printed
+}
+
+// Boolean expressions
+bool flag1 = true;
+bool flag2 = false;
+if ( (flag1) && (!(flag2)) ) {
+    print(32);        // 32
+}
+
+if (flag1 || flag2) {
+    print(33);        // 33
+}
+
+if (flag2) {
+    print(34);        // This should not be printed
+}
+
+if (!(flag1)) {
+    print(35);        // This should not be printed
+}

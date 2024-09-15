@@ -1,0 +1,189 @@
+--------------- SOURCE CODE ---------------
+// 2 shMem slots
+global bool flag0 = false;
+global bool flag1 = false;
+
+// 3rd shMem slot - turn can be 0 or 1
+global int turn;
+
+// 4th shMem slot - critical variable
+global int crit = 10;
+
+// 5th shMem slot - thread 1
+thread {
+
+    int i;
+    while (i < 10) {
+
+        flag0 = true;
+        turn = 1;
+        while ( flag1 && turn == 1 ) {
+            // busy wait
+        }
+        // critical section
+        crit = crit + 1;
+        print(crit);
+
+        flag0 = false;
+        i = i + 1;
+    }
+}
+
+// 6th shMem slot - thread 2
+thread {
+
+    int i;
+    while (i < 10) {
+
+        flag1 = true;
+        turn = 0;
+
+        while ( flag0 && turn == 0 ) {
+            // busy wait
+        }
+        // critical section
+        crit = crit - 2;
+        print(crit);
+
+        flag1 = false;
+        i = i + 1;
+    }
+}
+
+// note: thread 1 is declared earlier, thus it will most likely always start before thread 2 
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 2),
+  Load (ImmValue 10) 2,
+  WriteInstr 2 (DirAddr 3),
+  TestAndSet (DirAddr 4),
+  Receive 2,
+  TestAndSet (DirAddr 5),
+  Receive 2,
+  EndProg],
+ [ReadInstr (DirAddr 4),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 36),
+  Load (ImmValue 1) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (ImmValue 1) 2,
+  WriteInstr 2 (DirAddr 2),
+  Jump (Rel 1),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  ReadInstr (DirAddr 2),
+  Receive 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Branch 2 (Rel (-11)),
+  ReadInstr (DirAddr 3),
+  Receive 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 3),
+  ReadInstr (DirAddr 3),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-40)),
+  EndProg],
+ [ReadInstr (DirAddr 5),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 36),
+  Load (ImmValue 1) 2,
+  WriteInstr 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 2),
+  Jump (Rel 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  ReadInstr (DirAddr 2),
+  Receive 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Branch 2 (Rel (-11)),
+  ReadInstr (DirAddr 3),
+  Receive 2,
+  Push 2,
+  Load (ImmValue 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 3),
+  ReadInstr (DirAddr 3),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-40)),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 1 says 11
+Sprockell 2 says 9
+Sprockell 1 says 10
+Sprockell 2 says 8
+Sprockell 1 says 9
+Sprockell 2 says 7
+Sprockell 1 says 8
+Sprockell 2 says 6
+Sprockell 1 says 7
+Sprockell 2 says 5
+Sprockell 1 says 6
+Sprockell 2 says 4
+Sprockell 1 says 5
+Sprockell 2 says 3
+Sprockell 1 says 4
+Sprockell 2 says 2
+Sprockell 1 says 3
+Sprockell 2 says 1
+Sprockell 1 says 2
+Sprockell 2 says 0

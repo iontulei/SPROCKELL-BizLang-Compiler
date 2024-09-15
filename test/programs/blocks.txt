@@ -1,0 +1,59 @@
+// Global variable declarations
+int globalVar1 = 10;
+bool globalVar2 = true;
+
+{
+    // Local scope within a block
+    int localVar1 = 5;
+    bool localVar2 = false;
+
+    // Nested block
+    {
+        char localChar = 'c';
+        print(localChar);
+    }
+
+    // Access global variables
+    print(globalVar1);
+    print(globalVar2);
+
+    // Modify local variable
+    localVar1 = localVar1 + 1;
+    // print('\n');
+    print(localVar1);
+
+    // print('\n');
+    // Conditionals within local scope
+    if (localVar1 > 5) {
+        print(true);
+    } else {
+        print(false);
+    }
+
+    // print('\n');
+    // While loop within local scope
+    while (localVar1 < 10) {
+        localVar1 = localVar1 + 1;
+        print(localVar1);
+    }
+}
+
+// print('\n');
+// Global scope continues
+globalVar1 = globalVar1 * 2;
+print(globalVar1);
+
+if (globalVar2) {
+    print(true);
+}
+
+{
+    // Another local scope
+    int anotherLocalVar = 20;
+    while (anotherLocalVar > 15) {
+        anotherLocalVar = anotherLocalVar - 1;
+        print(anotherLocalVar);
+    }
+}
+
+print(999);

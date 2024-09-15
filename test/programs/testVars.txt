@@ -1,0 +1,17 @@
+int x;
+print(x);   // 0
+
+int y = 10;
+print(y);   // 10
+
+char a;
+print(a);    // ' '
+
+char b = 'K';
+print(b);    // 'K'
+
+bool c;     // false
+print(c);    // 0
+
+bool d = true;  // true
+print(d);       // 1

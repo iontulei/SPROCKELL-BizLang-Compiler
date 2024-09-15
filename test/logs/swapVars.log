@@ -1,0 +1,36 @@
+--------------- SOURCE CODE ---------------
+// This program swaps two variables.
+int x = 5;
+int y = 10;
+
+int tmp = x;
+x = y;
+y = tmp;
+
+// print("Val of x:");
+print(x);
+
+// print("Val of y:");
+print(y);
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 5) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 10) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 0) 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 1) 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 2) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 0) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (DirAddr 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 10
+Sprockell 0 says 5

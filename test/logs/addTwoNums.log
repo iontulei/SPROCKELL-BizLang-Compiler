@@ -1,0 +1,43 @@
+--------------- SOURCE CODE ---------------
+// This program adds two numbers
+
+int x = 1;
+global int y = 2;
+
+int z;
+z = x + y;
+
+print(z);
+
+// print("The sum of x and y is: ");
+print(x + y);
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 1) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 2) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (DirAddr 0) 2,
+  Push 2,
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 3
+Sprockell 0 says 3

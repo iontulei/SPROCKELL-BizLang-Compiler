@@ -1,0 +1,2043 @@
+--------------- SOURCE CODE ---------------
+// 2 shMem slots
+global int balance1 = 1000;
+global int balance2 = 1000;
+
+
+// 3th shMem slot - one common lock for performing transactions
+Lock opLock;
+
+// 4th shMem slot - lock used as a barrier / join for threads
+Lock barrier;
+
+// lock barrier
+// NOTE: THIS IS NOT A REENTRANT LOCK!
+// at the end, main thread will try to lock barrier again
+// but will have to wait for it to be unlocked by a thread
+barrier.lock;
+
+
+// display of nested threads
+// it is also possible to create two threads in 1 thread
+// ex: thread { thread{} thread{} }
+
+// 5th shMem slot - thread 1 - balance1
+thread {
+    
+    // 6th shMem slot - thread 2 - balance2
+    thread {
+        
+        // 7th shMem slot - thread 3 - balance1
+        thread {
+
+            //8th shMem slot - thread 4 - balance2
+            thread {
+
+                // thread 4 - balance2
+                int i;
+                while (i < 100) {
+                    int toBal = i / (100 / 2);
+                    int amount1 = ((i / 5) + 1) * 5;
+                    int amount2 = amount1 / 3;
+
+                    // balance1 += amount1
+                    if (toBal == 0) {
+                        opLock.lock;
+
+                        balance2 = balance2 - amount1;
+                        balance1 = balance1 + amount1;
+
+                        print(balance1);
+                        print(balance2);
+
+                        opLock.unlock;
+
+                    // balance1 -= amount2
+                    } else {
+                        opLock.lock;
+
+                        balance2 = balance2 + amount2;
+                        balance1 = balance1 - amount2;
+
+                        print(balance1);
+                        print(balance2);
+
+                        opLock.unlock;
+                    }
+                    i = i + 1;
+                }
+            }
+
+
+            // thread 3 - balance1
+            int i;
+            while (i < 100) {
+                int toBal = i / (100 / 2);
+                int amount1 = ((i / 5) + 1) * 5;
+                int amount2 = amount1 / 4;
+
+                // balance2 += amount2
+                if (toBal == 0) {
+                    opLock.lock;
+
+                    balance1 = balance1 - amount1;
+                    balance2 = balance2 + amount1;
+
+                    print(balance1);
+                    print(balance2);
+
+                    opLock.unlock;
+
+                // balance2 -= amount1
+                } else {
+                    opLock.lock;
+
+                    balance1 = balance1 + amount2;
+                    balance2 = balance2 - amount2;
+
+                    print(balance1);
+                    print(balance2);
+
+                    opLock.unlock;
+                }
+                i = i + 1;
+            }
+        }
+        
+
+        // thread 2 - balance2
+        int i;
+        while (i < 100) {
+            int toBal = i / (100 / 2);
+            int amount1 = ((i / 5) + 1) * 10;
+            int amount2 = amount1 / 3;
+
+            // balance1 += amount2
+            if (toBal == 0) {
+                opLock.lock;
+
+                balance2 = balance2 - amount2;
+                balance1 = balance1 + amount2;
+
+                print(balance1);
+                print(balance2);
+
+                opLock.unlock;
+
+            // balance1 -= amount1
+            } else {
+                opLock.lock;
+
+                balance2 = balance2 + amount1;
+                balance1 = balance1 - amount1;
+
+                print(balance1);
+                print(balance2);
+
+                opLock.unlock;
+            }
+            i = i + 1;
+        }
+    }
+
+
+    // thread 1 - balance1
+    int i;
+    while (i < 100) {
+        int toBal = i / (100 / 2);
+        int amount1 = ((i / 5) + 1) * 10;
+        int amount2 = amount1 / 2;
+
+        // balance2 += amount1
+        if (toBal == 0) {
+            opLock.lock;
+
+            balance1 = balance1 - amount1;
+            balance2 = balance2 + amount1;
+
+
+            print(balance1);
+            print(balance2);
+
+            opLock.unlock;
+
+        // balance2 -= amount2
+        } else {
+            opLock.lock;
+
+            balance1 = balance1 + amount2;
+            balance2 = balance2 - amount2;
+
+            print(balance1);
+            print(balance2);
+
+            opLock.unlock;
+        }
+        i = i + 1;
+    }
+
+    // unlock barrier
+    barrier.unlock;
+}
+
+
+// print("This text will be printed in parallel with other threads!");
+
+// main will wait here until barrier will be unlocked
+// because barrier is not a reentrant lock
+barrier.lock;
+
+print("Final balances:");
+print(balance1);    // -5050
+print(balance2);    // 7050
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 1000) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (ImmValue 1000) 2,
+  WriteInstr 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 3),
+  TestAndSet (DirAddr 3),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  TestAndSet (DirAddr 4),
+  Receive 2,
+  TestAndSet (DirAddr 3),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  Load (ImmValue 83) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 112) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 114) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 111) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 99) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 107) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 101) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 48) 2,
+  Compute Add 1 2 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 115) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 97) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 121) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 115) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 70) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 105) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 110) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 97) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 98) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 97) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 108) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 97) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 110) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 99) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 101) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 115) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 58) 2,
+  WriteInstr 2 (DirAddr 65537),
+  Load (ImmValue 10) 2,
+  WriteInstr 2 (DirAddr 65537),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg],
+ [ReadInstr (DirAddr 4),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  TestAndSet (DirAddr 5),
+  Receive 2,
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 223),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 5) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 27),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Jump (Rel 26),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-227)),
+  WriteInstr 0 (DirAddr 3),
+  EndProg],
+ [ReadInstr (DirAddr 5),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  TestAndSet (DirAddr 6),
+  Receive 2,
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 223),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 5) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 3) 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 27),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Jump (Rel 26),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-227)),
+  EndProg],
+ [ReadInstr (DirAddr 6),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  TestAndSet (DirAddr 7),
+  Receive 2,
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 223),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 5) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 4) 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 27),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Jump (Rel 26),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-227)),
+  EndProg],
+ [ReadInstr (DirAddr 7),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Jump (Rel 223),
+  Load (ImmValue 2) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 5) 2,
+  Push 2,
+  Load (DirAddr 0) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Mul 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 3) 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Load (ImmValue 0) 4,
+  Compute Equal 3 0 6,
+  Branch 6 (Rel 30),
+  Push 0,
+  Compute GtE 3 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 3 3,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Push 0,
+  Compute GtE 2 0 6,
+  Branch 6 (Rel 5),
+  Compute Sub 0 2 2,
+  Load (ImmValue 1) 6,
+  Pop 0,
+  Push 6,
+  Compute Add 0 2 5,
+  Compute Lt 5 3 6,
+  Branch 6 (Rel 5),
+  Load (ImmValue 1) 6,
+  Compute Add 4 6 4,
+  Compute Sub 5 3 5,
+  Jump (Rel (-5)),
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Pop 6,
+  Compute Equal 0 6 6,
+  Branch 6 (Rel 2),
+  Compute Sub 0 4 4,
+  Compute Add 0 4 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 27),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Jump (Rel 26),
+  TestAndSet (DirAddr 2),
+  Receive 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel (-3)),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  WriteInstr 2 (DirAddr 1),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Sub 3 2 2,
+  WriteInstr 2 (DirAddr 0),
+  ReadInstr (DirAddr 0),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  ReadInstr (DirAddr 1),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  WriteInstr 0 (DirAddr 2),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 100) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-227)),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 1 says 990
+Sprockell 1 says 1010
+Sprockell 4 says 995
+Sprockell 4 says 1005
+Sprockell 3 says 990
+Sprockell 3 says 1010
+Sprockell 2 says 993
+Sprockell 2 says 1007
+Sprockell 1 says 983
+Sprockell 1 says 1017
+Sprockell 4 says 988
+Sprockell 4 says 1012
+Sprockell 3 says 983
+Sprockell 3 says 1017
+Sprockell 2 says 986
+Sprockell 2 says 1014
+Sprockell 1 says 976
+Sprockell 1 says 1024
+Sprockell 4 says 981
+Sprockell 4 says 1019
+Sprockell 3 says 976
+Sprockell 3 says 1024
+Sprockell 2 says 979
+Sprockell 2 says 1021
+Sprockell 1 says 969
+Sprockell 1 says 1031
+Sprockell 4 says 974
+Sprockell 4 says 1026
+Sprockell 3 says 969
+Sprockell 3 says 1031
+Sprockell 2 says 972
+Sprockell 2 says 1028
+Sprockell 1 says 962
+Sprockell 1 says 1038
+Sprockell 4 says 967
+Sprockell 4 says 1033
+Sprockell 3 says 962
+Sprockell 3 says 1038
+Sprockell 2 says 965
+Sprockell 2 says 1035
+Sprockell 1 says 945
+Sprockell 1 says 1055
+Sprockell 4 says 955
+Sprockell 4 says 1045
+Sprockell 3 says 945
+Sprockell 3 says 1055
+Sprockell 2 says 951
+Sprockell 2 says 1049
+Sprockell 1 says 931
+Sprockell 1 says 1069
+Sprockell 4 says 941
+Sprockell 4 says 1059
+Sprockell 3 says 931
+Sprockell 3 says 1069
+Sprockell 2 says 937
+Sprockell 2 says 1063
+Sprockell 1 says 917
+Sprockell 1 says 1083
+Sprockell 4 says 927
+Sprockell 4 says 1073
+Sprockell 3 says 917
+Sprockell 3 says 1083
+Sprockell 2 says 923
+Sprockell 2 says 1077
+Sprockell 1 says 903
+Sprockell 1 says 1097
+Sprockell 4 says 913
+Sprockell 4 says 1087
+Sprockell 3 says 903
+Sprockell 3 says 1097
+Sprockell 2 says 909
+Sprockell 2 says 1091
+Sprockell 1 says 889
+Sprockell 1 says 1111
+Sprockell 4 says 899
+Sprockell 4 says 1101
+Sprockell 3 says 889
+Sprockell 3 says 1111
+Sprockell 2 says 895
+Sprockell 2 says 1105
+Sprockell 1 says 865
+Sprockell 1 says 1135
+Sprockell 4 says 880
+Sprockell 4 says 1120
+Sprockell 3 says 865
+Sprockell 3 says 1135
+Sprockell 2 says 875
+Sprockell 2 says 1125
+Sprockell 1 says 845
+Sprockell 1 says 1155
+Sprockell 4 says 860
+Sprockell 4 says 1140
+Sprockell 3 says 845
+Sprockell 3 says 1155
+Sprockell 2 says 855
+Sprockell 2 says 1145
+Sprockell 1 says 825
+Sprockell 1 says 1175
+Sprockell 4 says 840
+Sprockell 4 says 1160
+Sprockell 3 says 825
+Sprockell 3 says 1175
+Sprockell 2 says 835
+Sprockell 2 says 1165
+Sprockell 1 says 805
+Sprockell 1 says 1195
+Sprockell 3 says 790
+Sprockell 3 says 1210
+Sprockell 4 says 805
+Sprockell 4 says 1195
+Sprockell 2 says 815
+Sprockell 2 says 1185
+Sprockell 3 says 800
+Sprockell 3 says 1200
+Sprockell 1 says 770
+Sprockell 1 says 1230
+Sprockell 4 says 785
+Sprockell 4 says 1215
+Sprockell 2 says 795
+Sprockell 2 says 1205
+Sprockell 3 says 775
+Sprockell 3 says 1225
+Sprockell 4 says 795
+Sprockell 4 says 1205
+Sprockell 1 says 755
+Sprockell 1 says 1245
+Sprockell 2 says 768
+Sprockell 2 says 1232
+Sprockell 3 says 748
+Sprockell 3 says 1252
+Sprockell 4 says 768
+Sprockell 4 says 1232
+Sprockell 1 says 728
+Sprockell 1 says 1272
+Sprockell 2 says 741
+Sprockell 2 says 1259
+Sprockell 3 says 721
+Sprockell 3 says 1279
+Sprockell 4 says 741
+Sprockell 4 says 1259
+Sprockell 1 says 701
+Sprockell 1 says 1299
+Sprockell 2 says 714
+Sprockell 2 says 1286
+Sprockell 3 says 694
+Sprockell 3 says 1306
+Sprockell 4 says 714
+Sprockell 4 says 1286
+Sprockell 1 says 674
+Sprockell 1 says 1326
+Sprockell 3 says 654
+Sprockell 3 says 1346
+Sprockell 2 says 667
+Sprockell 2 says 1333
+Sprockell 4 says 687
+Sprockell 4 says 1313
+Sprockell 3 says 662
+Sprockell 3 says 1338
+Sprockell 1 says 622
+Sprockell 1 says 1378
+Sprockell 2 says 635
+Sprockell 2 says 1365
+Sprockell 4 says 660
+Sprockell 4 says 1340
+Sprockell 3 says 635
+Sprockell 3 says 1365
+Sprockell 1 says 585
+Sprockell 1 says 1415
+Sprockell 4 says 610
+Sprockell 4 says 1390
+Sprockell 2 says 626
+Sprockell 2 says 1374
+Sprockell 3 says 601
+Sprockell 3 says 1399
+Sprockell 4 says 626
+Sprockell 4 says 1374
+Sprockell 1 says 576
+Sprockell 1 says 1424
+Sprockell 2 says 592
+Sprockell 2 says 1408
+Sprockell 3 says 567
+Sprockell 3 says 1433
+Sprockell 4 says 592
+Sprockell 4 says 1408
+Sprockell 1 says 542
+Sprockell 1 says 1458
+Sprockell 2 says 558
+Sprockell 2 says 1442
+Sprockell 3 says 533
+Sprockell 3 says 1467
+Sprockell 4 says 558
+Sprockell 4 says 1442
+Sprockell 1 says 508
+Sprockell 1 says 1492
+Sprockell 2 says 524
+Sprockell 2 says 1476
+Sprockell 3 says 494
+Sprockell 3 says 1506
+Sprockell 4 says 524
+Sprockell 4 says 1476
+Sprockell 1 says 474
+Sprockell 1 says 1526
+Sprockell 2 says 490
+Sprockell 2 says 1510
+Sprockell 3 says 460
+Sprockell 3 says 1540
+Sprockell 4 says 490
+Sprockell 4 says 1510
+Sprockell 3 says 460
+Sprockell 3 says 1540
+Sprockell 2 says 480
+Sprockell 2 says 1520
+Sprockell 4 says 510
+Sprockell 4 says 1490
+Sprockell 1 says 450
+Sprockell 1 says 1550
+Sprockell 3 says 420
+Sprockell 3 says 1580
+Sprockell 2 says 440
+Sprockell 2 says 1560
+Sprockell 4 says 470
+Sprockell 4 says 1530
+Sprockell 1 says 410
+Sprockell 1 says 1590
+Sprockell 3 says 380
+Sprockell 3 says 1620
+Sprockell 2 says 400
+Sprockell 2 says 1600
+Sprockell 4 says 430
+Sprockell 4 says 1570
+Sprockell 1 says 370
+Sprockell 1 says 1630
+Sprockell 3 says 335
+Sprockell 3 says 1665
+Sprockell 2 says 355
+Sprockell 2 says 1645
+Sprockell 4 says 390
+Sprockell 4 says 1610
+Sprockell 3 says 355
+Sprockell 3 says 1645
+Sprockell 1 says 295
+Sprockell 1 says 1705
+Sprockell 2 says 315
+Sprockell 2 says 1685
+Sprockell 4 says 350
+Sprockell 4 says 1650
+Sprockell 3 says 315
+Sprockell 3 says 1685
+Sprockell 1 says 255
+Sprockell 1 says 1745
+Sprockell 4 says 290
+Sprockell 4 says 1710
+Sprockell 2 says 313
+Sprockell 2 says 1687
+Sprockell 3 says 278
+Sprockell 3 says 1722
+Sprockell 1 says 208
+Sprockell 1 says 1792
+Sprockell 4 says 243
+Sprockell 4 says 1757
+Sprockell 3 says 208
+Sprockell 3 says 1792
+Sprockell 2 says 231
+Sprockell 2 says 1769
+Sprockell 4 says 266
+Sprockell 4 says 1734
+Sprockell 1 says 196
+Sprockell 1 says 1804
+Sprockell 3 says 156
+Sprockell 3 says 1844
+Sprockell 2 says 179
+Sprockell 2 says 1821
+Sprockell 4 says 219
+Sprockell 4 says 1781
+Sprockell 3 says 179
+Sprockell 3 says 1821
+Sprockell 1 says 109
+Sprockell 1 says 1891
+Sprockell 2 says 132
+Sprockell 2 says 1868
+Sprockell 4 says 172
+Sprockell 4 says 1828
+Sprockell 3 says 132
+Sprockell 3 says 1868
+Sprockell 1 says 62
+Sprockell 1 says 1938
+Sprockell 2 says 85
+Sprockell 2 says 1915
+Sprockell 4 says 125
+Sprockell 4 says 1875
+Sprockell 3 says 85
+Sprockell 3 says 1915
+Sprockell 1 says 15
+Sprockell 1 says 1985
+Sprockell 2 says 41
+Sprockell 2 says 1959
+Sprockell 4 says 81
+Sprockell 4 says 1919
+Sprockell 3 says 41
+Sprockell 3 says 1959
+Sprockell 2 says 67
+Sprockell 2 says 1933
+Sprockell 4 says 107
+Sprockell 4 says 1893
+Sprockell 3 says 62
+Sprockell 3 says 1938
+Sprockell 1 says -18
+Sprockell 1 says 2018
+Sprockell 2 says 8
+Sprockell 2 says 1992
+Sprockell 3 says -37
+Sprockell 3 says 2037
+Sprockell 4 says 8
+Sprockell 4 says 1992
+Sprockell 1 says -72
+Sprockell 1 says 2072
+Sprockell 3 says -117
+Sprockell 3 says 2117
+Sprockell 2 says -91
+Sprockell 2 says 2091
+Sprockell 4 says -46
+Sprockell 4 says 2046
+Sprockell 1 says -126
+Sprockell 1 says 2126
+Sprockell 3 says -171
+Sprockell 3 says 2171
+Sprockell 2 says -145
+Sprockell 2 says 2145
+Sprockell 4 says -100
+Sprockell 4 says 2100
+Sprockell 1 says -180
+Sprockell 1 says 2180
+Sprockell 3 says -225
+Sprockell 3 says 2225
+Sprockell 4 says -180
+Sprockell 4 says 2180
+Sprockell 2 says -150
+Sprockell 2 says 2150
+Sprockell 3 says -200
+Sprockell 3 says 2200
+Sprockell 1 says -280
+Sprockell 1 says 2280
+Sprockell 4 says -235
+Sprockell 4 says 2235
+Sprockell 2 says -205
+Sprockell 2 says 2205
+Sprockell 3 says -255
+Sprockell 3 says 2255
+Sprockell 4 says -205
+Sprockell 4 says 2205
+Sprockell 1 says -295
+Sprockell 1 says 2295
+Sprockell 2 says -265
+Sprockell 2 says 2265
+Sprockell 3 says -315
+Sprockell 3 says 2315
+Sprockell 4 says -265
+Sprockell 4 says 2265
+Sprockell 1 says -355
+Sprockell 1 says 2355
+Sprockell 2 says -325
+Sprockell 2 says 2325
+Sprockell 3 says -375
+Sprockell 3 says 2375
+Sprockell 4 says -325
+Sprockell 4 says 2325
+Sprockell 3 says -375
+Sprockell 3 says 2375
+Sprockell 1 says -465
+Sprockell 1 says 2465
+Sprockell 2 says -435
+Sprockell 2 says 2435
+Sprockell 4 says -385
+Sprockell 4 says 2385
+Sprockell 3 says -372
+Sprockell 3 says 2372
+Sprockell 1 says -462
+Sprockell 1 says 2462
+Sprockell 2 says -429
+Sprockell 2 says 2429
+Sprockell 4 says -379
+Sprockell 4 says 2379
+Sprockell 3 says -366
+Sprockell 3 says 2366
+Sprockell 4 says -384
+Sprockell 4 says 2384
+Sprockell 1 says -474
+Sprockell 1 says 2474
+Sprockell 2 says -441
+Sprockell 2 says 2441
+Sprockell 3 says -428
+Sprockell 3 says 2428
+Sprockell 4 says -446
+Sprockell 4 says 2446
+Sprockell 3 says -433
+Sprockell 3 says 2433
+Sprockell 2 says -400
+Sprockell 2 says 2400
+Sprockell 1 says -500
+Sprockell 1 says 2500
+Sprockell 4 says -518
+Sprockell 4 says 2518
+Sprockell 3 says -505
+Sprockell 3 says 2505
+Sprockell 2 says -472
+Sprockell 2 says 2472
+Sprockell 1 says -572
+Sprockell 1 says 2572
+Sprockell 4 says -590
+Sprockell 4 says 2590
+Sprockell 3 says -575
+Sprockell 3 says 2575
+Sprockell 2 says -542
+Sprockell 2 says 2542
+Sprockell 4 says -560
+Sprockell 4 says 2560
+Sprockell 1 says -660
+Sprockell 1 says 2660
+Sprockell 3 says -645
+Sprockell 3 says 2645
+Sprockell 2 says -755
+Sprockell 2 says 2755
+Sprockell 4 says -775
+Sprockell 4 says 2775
+Sprockell 3 says -760
+Sprockell 3 says 2760
+Sprockell 1 says -860
+Sprockell 1 says 2860
+Sprockell 2 says -970
+Sprockell 2 says 2970
+Sprockell 4 says -990
+Sprockell 4 says 2990
+Sprockell 3 says -975
+Sprockell 3 says 2975
+Sprockell 1 says -1075
+Sprockell 1 says 3075
+Sprockell 4 says -1095
+Sprockell 4 says 3095
+Sprockell 3 says -1080
+Sprockell 3 says 3080
+Sprockell 2 says -1190
+Sprockell 2 says 3190
+Sprockell 1 says -1135
+Sprockell 1 says 3135
+Sprockell 4 says -1155
+Sprockell 4 says 3155
+Sprockell 3 says -1139
+Sprockell 3 says 3139
+Sprockell 2 says -1249
+Sprockell 2 says 3249
+Sprockell 4 says -1269
+Sprockell 4 says 3269
+Sprockell 3 says -1253
+Sprockell 3 says 3253
+Sprockell 1 says -1198
+Sprockell 1 says 3198
+Sprockell 2 says -1308
+Sprockell 2 says 3308
+Sprockell 4 says -1329
+Sprockell 4 says 3329
+Sprockell 3 says -1313
+Sprockell 3 says 3313
+Sprockell 1 says -1258
+Sprockell 1 says 3258
+Sprockell 2 says -1378
+Sprockell 2 says 3378
+Sprockell 4 says -1399
+Sprockell 4 says 3399
+Sprockell 3 says -1383
+Sprockell 3 says 3383
+Sprockell 1 says -1328
+Sprockell 1 says 3328
+Sprockell 2 says -1448
+Sprockell 2 says 3448
+Sprockell 4 says -1469
+Sprockell 4 says 3469
+Sprockell 3 says -1453
+Sprockell 3 says 3453
+Sprockell 4 says -1474
+Sprockell 4 says 3474
+Sprockell 3 says -1457
+Sprockell 3 says 3457
+Sprockell 1 says -1402
+Sprockell 1 says 3402
+Sprockell 2 says -1522
+Sprockell 2 says 3522
+Sprockell 4 says -1543
+Sprockell 4 says 3543
+Sprockell 3 says -1526
+Sprockell 3 says 3526
+Sprockell 2 says -1646
+Sprockell 2 says 3646
+Sprockell 1 says -1586
+Sprockell 1 says 3586
+Sprockell 4 says -1609
+Sprockell 4 says 3609
+Sprockell 3 says -1592
+Sprockell 3 says 3592
+Sprockell 2 says -1712
+Sprockell 2 says 3712
+Sprockell 1 says -1652
+Sprockell 1 says 3652
+Sprockell 4 says -1675
+Sprockell 4 says 3675
+Sprockell 3 says -1658
+Sprockell 3 says 3658
+Sprockell 2 says -1788
+Sprockell 2 says 3788
+Sprockell 4 says -1811
+Sprockell 4 says 3811
+Sprockell 3 says -1794
+Sprockell 3 says 3794
+Sprockell 1 says -1734
+Sprockell 1 says 3734
+Sprockell 2 says -1864
+Sprockell 2 says 3864
+Sprockell 4 says -1887
+Sprockell 4 says 3887
+Sprockell 3 says -1869
+Sprockell 3 says 3869
+Sprockell 1 says -1809
+Sprockell 1 says 3809
+Sprockell 4 says -1832
+Sprockell 4 says 3832
+Sprockell 3 says -1814
+Sprockell 3 says 3814
+Sprockell 2 says -1944
+Sprockell 2 says 3944
+Sprockell 1 says -1884
+Sprockell 1 says 3884
+Sprockell 4 says -1909
+Sprockell 4 says 3909
+Sprockell 3 says -1891
+Sprockell 3 says 3891
+Sprockell 2 says -2021
+Sprockell 2 says 4021
+Sprockell 4 says -2046
+Sprockell 4 says 4046
+Sprockell 1 says -1981
+Sprockell 1 says 3981
+Sprockell 3 says -1963
+Sprockell 3 says 3963
+Sprockell 2 says -2093
+Sprockell 2 says 4093
+Sprockell 4 says -2118
+Sprockell 4 says 4118
+Sprockell 3 says -2100
+Sprockell 3 says 4100
+Sprockell 1 says -2035
+Sprockell 1 says 4035
+Sprockell 2 says -2175
+Sprockell 2 says 4175
+Sprockell 4 says -2200
+Sprockell 4 says 4200
+Sprockell 3 says -2180
+Sprockell 3 says 4180
+Sprockell 1 says -2115
+Sprockell 1 says 4115
+Sprockell 2 says -2255
+Sprockell 2 says 4255
+Sprockell 4 says -2280
+Sprockell 4 says 4280
+Sprockell 3 says -2260
+Sprockell 3 says 4260
+Sprockell 2 says -2400
+Sprockell 2 says 4400
+Sprockell 3 says -2380
+Sprockell 3 says 4380
+Sprockell 4 says -2406
+Sprockell 4 says 4406
+Sprockell 1 says -2341
+Sprockell 1 says 4341
+Sprockell 3 says -2321
+Sprockell 3 says 4321
+Sprockell 2 says -2461
+Sprockell 2 says 4461
+Sprockell 4 says -2487
+Sprockell 4 says 4487
+Sprockell 1 says -2422
+Sprockell 1 says 4422
+Sprockell 3 says -2402
+Sprockell 3 says 4402
+Sprockell 4 says -2428
+Sprockell 4 says 4428
+Sprockell 2 says -2568
+Sprockell 2 says 4568
+Sprockell 1 says -2498
+Sprockell 1 says 4498
+Sprockell 3 says -2477
+Sprockell 3 says 4477
+Sprockell 4 says -2503
+Sprockell 4 says 4503
+Sprockell 2 says -2653
+Sprockell 2 says 4653
+Sprockell 3 says -2632
+Sprockell 3 says 4632
+Sprockell 4 says -2658
+Sprockell 4 says 4658
+Sprockell 1 says -2588
+Sprockell 1 says 4588
+Sprockell 2 says -2738
+Sprockell 2 says 4738
+Sprockell 3 says -2717
+Sprockell 3 says 4717
+Sprockell 4 says -2745
+Sprockell 4 says 4745
+Sprockell 1 says -2675
+Sprockell 1 says 4675
+Sprockell 2 says -2825
+Sprockell 2 says 4825
+Sprockell 3 says -2804
+Sprockell 3 says 4804
+Sprockell 4 says -2832
+Sprockell 4 says 4832
+Sprockell 3 says -2811
+Sprockell 3 says 4811
+Sprockell 1 says -2741
+Sprockell 1 says 4741
+Sprockell 2 says -2891
+Sprockell 2 says 4891
+Sprockell 4 says -2919
+Sprockell 4 says 4919
+Sprockell 3 says -2897
+Sprockell 3 says 4897
+Sprockell 2 says -3047
+Sprockell 2 says 5047
+Sprockell 1 says -2977
+Sprockell 1 says 4977
+Sprockell 4 says -3005
+Sprockell 4 says 5005
+Sprockell 3 says -2983
+Sprockell 3 says 4983
+Sprockell 4 says -3011
+Sprockell 4 says 5011
+Sprockell 2 says -3171
+Sprockell 2 says 5171
+Sprockell 1 says -3096
+Sprockell 1 says 5096
+Sprockell 3 says -3074
+Sprockell 3 says 5074
+Sprockell 4 says -3104
+Sprockell 4 says 5104
+Sprockell 2 says -3264
+Sprockell 2 says 5264
+Sprockell 3 says -3242
+Sprockell 3 says 5242
+Sprockell 1 says -3167
+Sprockell 1 says 5167
+Sprockell 4 says -3197
+Sprockell 4 says 5197
+Sprockell 3 says -3175
+Sprockell 3 says 5175
+Sprockell 2 says -3335
+Sprockell 2 says 5335
+Sprockell 1 says -3260
+Sprockell 1 says 5260
+Sprockell 4 says -3290
+Sprockell 4 says 5290
+Sprockell 3 says -3267
+Sprockell 3 says 5267
+Sprockell 2 says -3427
+Sprockell 2 says 5427
+Sprockell 4 says -3457
+Sprockell 4 says 5457
+Sprockell 3 says -3434
+Sprockell 3 says 5434
+Sprockell 1 says -3359
+Sprockell 1 says 5359
+Sprockell 2 says -3519
+Sprockell 2 says 5519
+Sprockell 4 says -3549
+Sprockell 4 says 5549
+Sprockell 3 says -3526
+Sprockell 3 says 5526
+Sprockell 1 says -3451
+Sprockell 1 says 5451
+Sprockell 2 says -3621
+Sprockell 2 says 5621
+Sprockell 4 says -3652
+Sprockell 4 says 5652
+Sprockell 3 says -3629
+Sprockell 3 says 5629
+Sprockell 1 says -3549
+Sprockell 1 says 5549
+Sprockell 4 says -3580
+Sprockell 4 says 5580
+Sprockell 3 says -3557
+Sprockell 3 says 5557
+Sprockell 2 says -3727
+Sprockell 2 says 5727
+Sprockell 4 says -3758
+Sprockell 4 says 5758
+Sprockell 3 says -3733
+Sprockell 3 says 5733
+Sprockell 1 says -3653
+Sprockell 1 says 5653
+Sprockell 2 says -3823
+Sprockell 2 says 5823
+Sprockell 4 says -3854
+Sprockell 4 says 5854
+Sprockell 3 says -3829
+Sprockell 3 says 5829
+Sprockell 2 says -3999
+Sprockell 2 says 5999
+Sprockell 1 says -3919
+Sprockell 1 says 5919
+Sprockell 4 says -3950
+Sprockell 4 says 5950
+Sprockell 3 says -3925
+Sprockell 3 says 5925
+Sprockell 2 says -4095
+Sprockell 2 says 6095
+Sprockell 1 says -4015
+Sprockell 1 says 6015
+Sprockell 4 says -4048
+Sprockell 4 says 6048
+Sprockell 3 says -4023
+Sprockell 3 says 6023
+Sprockell 2 says -4203
+Sprockell 2 says 6203
+Sprockell 4 says -4236
+Sprockell 4 says 6236
+Sprockell 3 says -4211
+Sprockell 3 says 6211
+Sprockell 1 says -4131
+Sprockell 1 says 6131
+Sprockell 4 says -4164
+Sprockell 4 says 6164
+Sprockell 2 says -4344
+Sprockell 2 says 6344
+Sprockell 1 says -4259
+Sprockell 1 says 6259
+Sprockell 4 says -4292
+Sprockell 4 says 6292
+Sprockell 2 says -4472
+Sprockell 2 says 6472
+Sprockell 1 says -4387
+Sprockell 1 says 6387
+Sprockell 4 says -4420
+Sprockell 4 says 6420
+Sprockell 2 says -4600
+Sprockell 2 says 6600
+Sprockell 1 says -4515
+Sprockell 1 says 6515
+Sprockell 2 says -4695
+Sprockell 2 says 6695
+Sprockell 1 says -4610
+Sprockell 1 says 6610
+Sprockell 2 says -4800
+Sprockell 2 says 6800
+Sprockell 1 says -4715
+Sprockell 1 says 6715
+Sprockell 2 says -4905
+Sprockell 2 says 6905
+Sprockell 2 says -5095
+Sprockell 2 says 7095
+Sprockell 1 says -5005
+Sprockell 1 says 7005
+Sprockell 2 says -5195
+Sprockell 2 says 7195
+Sprockell 1 says -5105
+Sprockell 1 says 7105
+Sprockell 2 says -5295
+Sprockell 2 says 7295
+Sprockell 1 says -5205
+Sprockell 1 says 7205
+Sprockell 2 says -5405
+Sprockell 2 says 7405
+Sprockell 1 says -5315
+Sprockell 1 says 7315
+Sprockell 2 says -5515
+Sprockell 2 says 7515
+Sprockell 1 says -5425
+Sprockell 1 says 7425
+Sprockell 2 says -5625
+Sprockell 2 says 7625
+Sprockell 1 says -5530
+Sprockell 1 says 7530
+Sprockell 2 says -5730
+Sprockell 2 says 7730
+Sprockell 1 says -5635
+Sprockell 1 says 7635
+Sprockell 2 says -5835
+Sprockell 2 says 7835
+Sprockell 1 says -5740
+Sprockell 1 says 7740
+Sprockell 1 says -5645
+Sprockell 1 says 7645
+Sprockell 1 says -5550
+Sprockell 1 says 7550
+Sprockell 1 says -5450
+Sprockell 1 says 7450
+Sprockell 1 says -5350
+Sprockell 1 says 7350
+Sprockell 1 says -5250
+Sprockell 1 says 7250
+Sprockell 1 says -5150
+Sprockell 1 says 7150
+Sprockell 1 says -5050
+Sprockell 1 says 7050
+Sprockell 0 says Final balances:
+Sprockell 0 says -5050
+Sprockell 0 says 7050

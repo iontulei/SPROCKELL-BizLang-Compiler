@@ -1,0 +1,15 @@
+Lock l;
+
+thread {
+    l.lock;
+
+    thread {
+        l.lock;
+        print("This should not be printed");
+    }
+}
+
+//print("print this");
+
+l.lock;
+//print("do not print this");

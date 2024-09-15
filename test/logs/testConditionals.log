@@ -1,0 +1,535 @@
+--------------- SOURCE CODE ---------------
+// Simple if statements
+if (true) {
+    print(1);         // 1
+}
+
+if (false) {
+    print(2);         // This should not be printed
+}
+
+// If-else statements
+if (true) {
+    print(3);         // 3
+} else {
+    print(4);         // This should not be printed
+}
+
+if (false) {
+    print(5);         // This should not be printed
+} else {
+    print(6);         // 6
+}
+
+// Nested if-else statements
+if (true) {
+    if (false) {
+        print(7);     // This should not be printed
+    } else {
+        print(8);     // 8
+    }
+} else {
+    print(9);         // This should not be printed
+}
+
+// Logical operators
+if (true && true) {
+    print(10);        // 10
+}
+
+if (true && false) {
+    print(11);        // This should not be printed
+}
+
+if (false || true) {
+    print(12);        // 12
+}
+
+if (false || false) {
+    print(13);        // This should not be printed
+}
+
+if (!(false)) {
+    print(14);        // 14
+}
+
+if (!(true)) {
+    print(15);        // This should not be printed
+}
+
+// Combining logical operators
+if ((true && false) || (false && true)) {
+    print(16);        // This should not be printed
+}
+
+if ((true && true) || (false && false)) {
+    print(17);        // 17
+}
+
+// Using variables in conditions
+int x = 5;
+int y = 10;
+if (x < y) {
+    print(18);        // 18
+}
+
+if (x > y) {
+    print(19);        // This should not be printed
+}
+
+if (x == 5 && y == 10) {
+    print(20);        // 20
+}
+
+if (x != 5 || y != 10) {
+    print(21);        // This should not be printed
+}
+
+// Else-if ladder
+int a = 5;
+if (a < 5) {
+    print(22);        // This should not be printed
+} else {
+    print(24);        // 24
+}
+
+a = 3;
+if (a < 5) {
+    print(25);        // 25
+} else {
+    print(27);        // This should not be printed
+}
+
+// Complex conditions
+int b = 4;
+int c = 8;
+if ((a < b && b < c) || (a == 3 && c == 8)) {
+    print(28);        // 28
+}
+
+if ((a > b || b > c) && (a != 3 || c != 8)) {
+    print(29);        // This should not be printed
+}
+
+// Edge cases
+int zero = 0;
+int one = 1;
+if (zero == 0 && one == 1) {
+    print(30);        // 30
+}
+
+if (zero != 0 || one != 1) {
+    print(31);        // This should not be printed
+}
+
+// Boolean expressions
+bool flag1 = true;
+bool flag2 = false;
+if ( (flag1) && (!(flag2)) ) {
+    print(32);        // 32
+}
+
+if (flag1 || flag2) {
+    print(33);        // 33
+}
+
+if (flag2) {
+    print(34);        // This should not be printed
+}
+
+if (!(flag1)) {
+    print(35);        // This should not be printed
+}
+
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 1) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 0) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 2) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 3) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 4) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 0) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 5) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 6) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 1) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 10),
+  Load (ImmValue 0) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 7) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 8) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 9) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 1) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 10) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 11) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 12) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 0) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 13) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 0) 2,
+  Compute Equal 0 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 14) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Compute Equal 0 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 15) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 16) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 17) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 5) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 10) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 18) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Gt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 19) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 20) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 21) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 5) 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 22) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 24) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 3) 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 25) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 27) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 4) 2,
+  Store 2 (DirAddr 3),
+  Load (ImmValue 8) 2,
+  Store 2 (DirAddr 4),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 3) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Push 2,
+  Load (ImmValue 8) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 28) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Pop 3,
+  Compute Gt 3 2 2,
+  Push 2,
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Pop 3,
+  Compute Gt 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Push 2,
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 3) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Push 2,
+  Load (ImmValue 8) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 29) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 5),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 6),
+  Load (DirAddr 5) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Push 2,
+  Load (DirAddr 6) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 30) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 5) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Push 2,
+  Load (DirAddr 6) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute NEq 3 2 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 31) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 7),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 8),
+  Load (DirAddr 7) 2,
+  Push 2,
+  Load (DirAddr 8) 2,
+  Compute Equal 0 2 2,
+  Pop 3,
+  Compute And 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 32) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 7) 2,
+  Push 2,
+  Load (DirAddr 8) 2,
+  Pop 3,
+  Compute Or 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 33) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 8) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 34) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 7) 2,
+  Compute Equal 0 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 35) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 1
+Sprockell 0 says 3
+Sprockell 0 says 6
+Sprockell 0 says 8
+Sprockell 0 says 10
+Sprockell 0 says 12
+Sprockell 0 says 14
+Sprockell 0 says 17
+Sprockell 0 says 18
+Sprockell 0 says 20
+Sprockell 0 says 24
+Sprockell 0 says 25
+Sprockell 0 says 28
+Sprockell 0 says 30
+Sprockell 0 says 32
+Sprockell 0 says 33

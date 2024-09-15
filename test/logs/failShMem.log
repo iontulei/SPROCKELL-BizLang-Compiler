@@ -1,0 +1,27 @@
+--------------- SOURCE CODE ---------------
+global int a1;global int a2;global int a3;global int a4;global int a5;global int a6;global int a7;global int a8;global int a9;print(a9);
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 0),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 2),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 3),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 4),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 5),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 6),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 7),
+  Load (ImmValue 0) 2,
+  WriteInstr 2 (DirAddr 8),
+  ReadInstr (DirAddr 8),
+  Receive 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]

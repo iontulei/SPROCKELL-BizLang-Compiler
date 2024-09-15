@@ -1,0 +1,85 @@
+// testThreads.txt
+
+// NOTE: SHARED MEMORY HAS ONLY 8 SLOTS!
+
+// Declare global variables (4 shMem slots)
+global int x = 0;
+global int y = 5;
+Lock myLock;
+Lock barrier;
+
+// lock "barrier"
+// NOTE: THIS IS NOT AN REENTRANT LOCK!
+barrier.lock;
+
+// 5th shMem slot
+// First thread: increment x and y within a locked block
+thread {
+    myLock.lock;
+    x = x + 1;
+    y = y + 2;
+
+    print("Thread 1 x");
+    print(x); // Should print 1
+    print("Thread 1 y");
+    print(y); // Should print 7
+
+    myLock.unlock;
+}
+
+// 6th shMem slot
+// Second thread: decrement x
+thread {
+    myLock.lock;
+    x = x - 1;
+
+    print("Thread 2 x");
+    print(x); // Should print 0
+    
+    myLock.unlock;
+
+    // 7th shMem slot
+    thread {
+        myLock.lock;
+        x = x * 2;
+        y = y * 3;
+
+        print("Thread 3 x");
+        print(x);
+        print("Thread 3 y");
+        print(y);
+        myLock.unlock;
+
+        // 8th shMem slot
+        thread {
+            x = x + 2;
+            y = y + 2;
+            
+            print("Thread 4 x");
+            print(x);
+            print("Thread 4 y");
+            print(y);
+
+            // unlock "barrier"
+            barrier.unlock;
+        }
+    }
+}
+
+// 9th shMem slot (if uncommented - causes error) 
+// Lock l8;
+// l8.lock;
+
+
+// barrier works as a barrier / join of threads
+barrier.lock;
+
+myLock.lock;
+
+// Verify the final state of x, y
+print("Final x");
+print(x);
+print("Final y");
+print(y);
+
+myLock.unlock;

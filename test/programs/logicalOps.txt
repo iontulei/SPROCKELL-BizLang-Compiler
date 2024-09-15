@@ -1,0 +1,59 @@
+// Boolean variable declaration and assignment
+bool a = true;
+bool b = false;
+bool c = (!(a));
+bool d = (!(true));
+bool e = (!(1==2==false));
+
+print(e);
+
+// Boolean expressions in print statements
+print( (true && false) );
+
+// print('\n');
+print( (!(true)) );
+print( (!(false)) );
+print( (!(a && b)) );
+
+// print('\n');
+print( ( (true || false) && (a || (!(b)) ) ) );
+
+// print('\n');
+print( ( (a == b) || (a != b) ) );
+print( ( (a == true) && (b == false) ) );
+print( ( (a != true) || (b != false) ) );
+print( ( (a != false) || (b != true) ) );
+
+// print('\n');
+// Boolean expressions in conditions
+if (true && false) {
+    // print("This should not print");
+    print(101);
+} else {
+    // print("This should print");
+    print(202);
+}
+
+// print('\n');
+if (!(true)) {
+    // print("This should not print");
+    print(303);
+} else {
+    // print("This should print");
+    print(404);
+}
+
+// print('\n');
+if (!(a && b)) {
+    // print("This should print");
+    print(505);
+}
+
+// print('\n');
+while (a || b) {
+    // print("Looping");
+    print(606);
+    a = false;  // Break the loop
+}
+
+print(999);

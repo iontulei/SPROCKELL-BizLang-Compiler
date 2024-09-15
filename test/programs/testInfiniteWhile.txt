@@ -1,0 +1,11 @@
+// Test infinite loops with while
+
+int x = 0;
+//print(x);
+while (true) {
+    x = x + 1;
+    //print(x);
+}
+
+// this should never be printed
+print("FINISH");

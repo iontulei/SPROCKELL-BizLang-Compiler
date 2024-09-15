@@ -1,0 +1,13 @@
+// This program swaps two variables.
+int x = 5;
+int y = 10;
+
+int tmp = x;
+x = y;
+y = tmp;
+
+// print("Val of x:");
+print(x);
+
+// print("Val of y:");
+print(y);

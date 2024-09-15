@@ -1,0 +1,45 @@
+// Examples of division operations and their results
+
+// Integer division: 10 / 3
+int a = 10;
+int b = 3;
+int result1 = a / b;
+print("Integer division of 10 by 3:");
+print(result1);   // Expected output: 3
+
+// Integer division with negative numbers: -19 / 4
+int c = -19;
+int d = 4;
+int result2 = c / d;
+print("Integer division of -19 by 4:");
+print(result2);   // Expected output: -4
+
+// Integer division with negative numbers: 21 / -4
+int e = 21;
+int f = -4;
+int result3 = e / f;
+print("Integer division of 21 by -4:");
+print(result3);   // Expected output: -5
+
+
+// Integer division with negative numbers: -23 / -5
+int g = -23;
+int h = -5;
+int result4 = g / h;
+print("Integer division of -23 by -5:");
+print(result4);   // Expected output: 4
+
+// Division by zero: 8 / 0
+int i = 8;
+int j = 0;
+// This will return 0
+int result5 = i / j;
+print("Division of 8 by zero:");
+print(result5);   // Expected output: 0
+
+// Division of zero by a non-zero number: 0 / 5
+int k = 0;
+int l = 5;
+int result6 = k / l;
+print("Division of zero by 5:");
+print(result6);   // Expected output: 0

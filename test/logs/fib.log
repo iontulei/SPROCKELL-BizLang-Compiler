@@ -1,0 +1,113 @@
+--------------- SOURCE CODE ---------------
+int a = 0;
+int b = 1;
+int c = 0;
+int i = 2;
+
+// fib(15)
+int n = 15;
+while (i <= n) {
+    c = a + b;
+    a = b;
+    b = c;
+
+    i = i + 1;
+}
+
+print(b);   // should be 610
+
+
+a = 0;
+b = 1;
+c = 0;
+i = 2;
+
+// fib(30)
+n = 30;
+while (i <= n) {
+    c = a + b;
+    a = b;
+    b = c;
+
+    i = i + 1;
+}
+
+print(b);   // should be 832040
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 2) 2,
+  Store 2 (DirAddr 3),
+  Load (ImmValue 15) 2,
+  Store 2 (DirAddr 4),
+  Jump (Rel 17),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 1) 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 2) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Pop 3,
+  Compute LtE 3 2 2,
+  Branch 2 (Rel (-21)),
+  Load (DirAddr 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 2) 2,
+  Store 2 (DirAddr 3),
+  Load (ImmValue 30) 2,
+  Store 2 (DirAddr 4),
+  Jump (Rel 17),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (DirAddr 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 1) 2,
+  Store 2 (DirAddr 0),
+  Load (DirAddr 2) 2,
+  Store 2 (DirAddr 1),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (DirAddr 4) 2,
+  Pop 3,
+  Compute LtE 3 2 2,
+  Branch 2 (Rel (-21)),
+  Load (DirAddr 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 610
+Sprockell 0 says 832040

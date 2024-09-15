@@ -1,0 +1,188 @@
+--------------- SOURCE CODE ---------------
+// Global declarations
+int globalInt = 10;
+bool globalBool = true;
+
+// Main block
+{
+    // Local declarations
+    int localInt = 5;
+    bool localBool = false;
+
+    // If-else statement
+    if (localInt < 10) {
+        print(1);
+    } else {
+        print(2);
+    }
+
+    // If statement with boolean condition
+    if (globalBool) {
+        print(3);
+    }
+
+    // Nested if-else statement
+    if (localInt == 5) {
+        if (globalInt > 10) {
+            print(4);
+        } else {
+            print(5);
+        }
+    } else {
+        print(6);
+    }
+
+    // While loop
+    while (localInt < 8) {
+        print(localInt);
+        localInt = localInt + 1;
+    }
+
+    // While loop with boolean condition
+    while (localBool == false) {
+        print(7);
+        localBool = true;
+    }
+
+    // Nested while loop
+    int counter = 0;
+    while (counter < 3) {
+        int innerCounter = 0;
+        while (innerCounter < 2) {
+            print(innerCounter);
+            innerCounter = innerCounter + 1;
+        }
+        counter = counter + 1;
+    }
+
+    print(999);
+}
+
+
+------------- GENERATED CODE -------------
+[[Load (ImmValue 10) 2,
+  Store 2 (DirAddr 0),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 1),
+  Load (ImmValue 5) 2,
+  Store 2 (DirAddr 2),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 1) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 2) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (DirAddr 1) 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 3) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 1),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 5) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 14),
+  Load (DirAddr 0) 2,
+  Push 2,
+  Load (ImmValue 10) 2,
+  Pop 3,
+  Compute Gt 3 2 2,
+  Compute Equal 0 2 2,
+  Branch 2 (Rel 4),
+  Load (ImmValue 4) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 5) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 3),
+  Load (ImmValue 6) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Jump (Rel 9),
+  Load (DirAddr 2) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 2),
+  Load (DirAddr 2) 2,
+  Push 2,
+  Load (ImmValue 8) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-13)),
+  Jump (Rel 5),
+  Load (ImmValue 7) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (ImmValue 1) 2,
+  Store 2 (DirAddr 3),
+  Load (DirAddr 3) 2,
+  Push 2,
+  Load (ImmValue 0) 2,
+  Pop 3,
+  Compute Equal 3 2 2,
+  Branch 2 (Rel (-9)),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 4),
+  Jump (Rel 24),
+  Load (ImmValue 0) 2,
+  Store 2 (DirAddr 5),
+  Jump (Rel 9),
+  Load (DirAddr 5) 2,
+  WriteInstr 2 (DirAddr 65536),
+  Load (DirAddr 5) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 5),
+  Load (DirAddr 5) 2,
+  Push 2,
+  Load (ImmValue 2) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-13)),
+  Load (DirAddr 4) 2,
+  Push 2,
+  Load (ImmValue 1) 2,
+  Pop 3,
+  Compute Add 3 2 2,
+  Store 2 (DirAddr 4),
+  Load (DirAddr 4) 2,
+  Push 2,
+  Load (ImmValue 3) 2,
+  Pop 3,
+  Compute Lt 3 2 2,
+  Branch 2 (Rel (-28)),
+  Load (ImmValue 999) 2,
+  WriteInstr 2 (DirAddr 65536),
+  EndProg
+]]
+
+----------------- OUTPUT -----------------
+Sprockell 0 says 1
+Sprockell 0 says 3
+Sprockell 0 says 5
+Sprockell 0 says 5
+Sprockell 0 says 6
+Sprockell 0 says 7
+Sprockell 0 says 7
+Sprockell 0 says 0
+Sprockell 0 says 1
+Sprockell 0 says 0
+Sprockell 0 says 1
+Sprockell 0 says 0
+Sprockell 0 says 1
+Sprockell 0 says 999

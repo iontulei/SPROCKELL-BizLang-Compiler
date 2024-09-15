@@ -1,0 +1,16 @@
+Lock l1;
+
+thread {
+    l1.lock;
+    print(101);
+    l1.unlock;
+}
+
+int x;
+while (x < 1) {
+    x = x + 1;
+}
+
+l1.lock;
+print(202);
+l1.unlock;

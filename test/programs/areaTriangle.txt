@@ -1,0 +1,14 @@
+// This program finds the (squared) area of a triangle
+// since our language does not support sqrt.
+
+int a = 5;
+int b = 6;
+int c = 7;
+
+int s = (a + b + c) / 2;
+int x = a - b - c;              // -8
+
+int area = (s * (s-a) * (s-b) * (s-c));     // 216
+
+// print("The area of the triangle is:");
+print(area);
