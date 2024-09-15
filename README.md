@@ -13,9 +13,9 @@
 
 ## Project Overview
 
-The objective of this project was to design and implement a **compiler** for a new programming language, **BizLang** (Bizarre Language). The entire compiler was written in **Haskell** and designed to generate code for a custom virtual machine called [**SPROCKELL**](https://github.com/bobismijnnaam/sprockell). This was done as part of the **Programming Paradigms** module in the **Technical Computer Science Bachelor's program** at the University of Twente.
+The objective of this project was to design and implement a **compiler** for a new programming language, **BizLang** (Bizarre Language). The entire compiler was written in **Haskell** and designed to generate code for a custom virtual machine called [**SPROCKELL**](https://github.com/bobismijnnaam/sprockell). This was done as part of the **Programming Paradigms** module in the **Technical Computer Science Bachelor's program** at the **University of Twente**.
 
-We have develop both the **frontend** (parsing, type checking) and the **backend** (code generation) of a compiler, while adhering to certain **mandatory features** like supporting concurrency, basic data types, expressions, and control flow constructs.
+We have developed both the **frontend** (parsing, type checking) and the **backend** (code generation) of a compiler while adhering to certain **mandatory features** like supporting concurrency, basic data types, expressions, and control flow constructs.
 
 ## Language Features
 
