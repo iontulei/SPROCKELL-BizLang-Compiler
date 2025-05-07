@@ -17,6 +17,26 @@ The objective of this project was to design and implement a **compiler** for a n
 
 We have developed both the **frontend** (parsing, type checking) and the **backend** (code generation) of a compiler while adhering to certain **mandatory features** like supporting concurrency, basic data types, expressions, and control flow constructs.
 
+## Running the Compiler
+
+To run the compiler on a BizLang source file, use the following command in the  terminal:
+
+```bsah
+stack run -- "path/to/source/file"
+```
+
+This will compile the source program and generate SPRIL code for execution on the SPROCKELL simulator.
+
+## Automated Tests
+
+We have implemented automated tests for each stage of the compilation process (parsing, elaboration, and code generation) using **HSpec** and **QuickCheck**. To run the tests, use:
+
+```bash
+stack test
+```
+
+This will execute all tests as defined in the `test` section of the `package.yml` file.
+
 ## Language Features
 
 ### 1. **Data Types**
@@ -158,26 +178,6 @@ stack build
 ```
 
 This will install a local version of GHC (the Haskell compiler) and the required libraries. The files in the `src` and `app` directories will be compiled.
-
-## Running the Compiler
-
-To run the compiler on a BizLang source file, use the following command in the  terminal:
-
-```bsah
-stack run -- "path/to/source/file"
-```
-
-This will compile the source program and generate SPRIL code for execution on the SPROCKELL simulator.
-
-## Automated Tests
-
-We have implemented automated tests for each stage of the compilation process (parsing, elaboration, and code generation) using **HSpec** and **QuickCheck**. To run the tests, use:
-
-```bash
-stack test
-```
-
-This will execute all tests as defined in the `test` section of the `package.yml` file.
 
 ## Sample Programs
 
